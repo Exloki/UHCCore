@@ -1,13 +1,27 @@
 package me.ofearr.uhccore.Enchants;
 
+import me.ofearr.uhccore.Main;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class SpiderEnchant extends Enchantment {
+import java.util.HashMap;
+import java.util.UUID;
+
+public class SpiderEnchant extends Enchantment implements Listener {
 
     private static int enchantID;
     public static int maxLevel;
+    HashMap<UUID, Float> spiderHashmap = new HashMap<>();
+
+    static Main plugin = Main.plugin;
 
     public SpiderEnchant(int id) {
         super(id);

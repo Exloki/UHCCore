@@ -1,7 +1,8 @@
 package me.ofearr.uhccore;
 
-import me.ofearr.uhccore.Enchants.CustomEnchantmentListener;
+import me.ofearr.uhccore.Enchants.CustomEnchantmentHandler;
 import me.ofearr.uhccore.Enchants.SpiderEnchant;
+import me.ofearr.uhccore.Enchants.SpiderEnchantListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -83,8 +84,10 @@ public final class Main extends JavaPlugin {
         loadConfig();
 
         //Register Enchants
-        Bukkit.getPluginManager().registerEvents(new CustomEnchantmentListener(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomEnchantmentHandler(), this);
+
         registerEnchant(spiderEnchant = new SpiderEnchant(100), spiderEnchantItemArray);
+        Bukkit.getPluginManager().registerEvents(new SpiderEnchantListener(), this);
 
     }
 
