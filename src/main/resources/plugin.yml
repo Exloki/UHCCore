@@ -1,0 +1,6 @@
+name: UHC Core
+version: ${project.version}
+main: me.ofearr.uhccore.Main
+commands:
+  start-uhc:
+    description: Starts a game of UHC.

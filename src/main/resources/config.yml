@@ -1,0 +1,21 @@
+Settings:
+  #Time in seconds
+  Grace-Period: 600
+  #Time in seconds (time until death match after game starts - needs changed due to unrealistic value)
+  Death-Match-Timer: 1200
+  #Amount of remaining players for death match to be forced
+  Force-Death-Match: 5
+  #Furthest X,Z loc for player to be randomly teleported
+  random-teleport-bounds: 10000
+  #Time in seconds
+  border-shrink-interval: 200
+  default-border-size: 10000
+  #Sets the size decrease per shrink
+  border-shrink-amount: 2
+  over-world-name: "world"
+  nether-world-name: "world_nether"
+  end-world-name: "world_the_end"
+  deathmatch-world-name: "deathmatch"
+  score-board-display-name: "&8&lUHC &8| &b&lStaff Event"
+  Deathmatch-Spawns:
+    - 0,0,0
