@@ -171,9 +171,9 @@ public class DeathMatchManager implements Listener {
             winString = TranslateColour("&a&l=========================\n" +
                     "        &6&lTop 3 Winners\n" +
                     " \n" +
-                    "       &6&l1) " + winners.get(0) + " \n" +
+                    "       &6&l1) " + winners.get(2) + " \n" +
                     "       &e&l2) " + winners.get(1)  + " \n" +
-                    "       &c&l3) " + winners.get(2)  + "\n" +
+                    "       &c&l3) " + winners.get(0)  + "\n" +
                     "&a&l=========================");
 
             for (Player p : Bukkit.getOnlinePlayers()) {
