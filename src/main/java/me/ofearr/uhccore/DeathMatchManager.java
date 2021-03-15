@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -196,6 +197,19 @@ public class DeathMatchManager implements Listener {
                     world.getBlockAt(playerPlacedBlocks.get(i)).setType(Material.AIR);
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public static void disableMovement(PlayerMoveEvent e){
+        if(countDown != true) return;
+        Location from = e.getFrom();
+        Location to = e.getTo();
+
+        if(from == to){
+            return;
+        }else{
+            e.setCancelled(true);
         }
     }
 }
