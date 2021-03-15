@@ -1,14 +1,18 @@
 package me.ofearr.uhccore;
 
 import me.ofearr.uhccore.Enchants.CustomEnchantmentHandler;
+import me.ofearr.uhccore.Enchants.RomanNumeralUtil;
 import me.ofearr.uhccore.Enchants.SpiderEnchant;
 import me.ofearr.uhccore.Enchants.SpiderEnchantListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public final class Main extends JavaPlugin {
@@ -104,7 +109,7 @@ public final class Main extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         Player player = (Player) sender;
-        if(command.getName() == "start-uhc"){
+        if(command.getName().equalsIgnoreCase("start-uhc")){
             if(!player.hasPermission("uhc.start")){
                 player.sendMessage(TranslateColour("&8[&d&lUHC&8] >> &cInsufficient Permissions!"));
             } else{
@@ -169,6 +174,42 @@ public final class Main extends JavaPlugin {
                             gameStartTimer--;
                         }
                     }.runTaskTimerAsynchronously(this, 0L, 20L);
+
+                }
+            }
+        }
+        if(command.getName().equalsIgnoreCase("giveenchant")){
+            if(!player.hasPermission("uhc.enchants")){
+                player.sendMessage(TranslateColour("&8[&d&lUHC&8] >> &cInsufficient Permissions!"));
+            } else{
+                if(args.length < 2){
+                    player.sendMessage(TranslateColour("&8[&d&lUHC&8] &8[&eEnchants&8] >> &cInsufficient Arguments! /giveenchant"));
+                } else{
+                    Player target = Bukkit.getPlayer(args[0]);
+                    String enchantName = args[1].substring(0, 1).toUpperCase() + args[1].substring(1);
+                    Enchantment enchant = Enchantment.getByName(enchantName);
+                    int enchantLevel = Integer.valueOf(args[2]);
+
+                    ItemStack enchantBook = new ItemStack(Material.BOOK_AND_QUILL);
+                    ItemMeta enchantMeta = enchantBook.getItemMeta();
+
+                    enchantMeta.setDisplayName(TranslateColour("&d&kH&cEnchanted Book&d&kH"));
+                    List<String> enchantLore = new ArrayList<>();
+
+                    enchantLore.add(TranslateColour(" "));
+                    enchantLore.add(TranslateColour("&aEnchant: &c" + enchantName + " " + RomanNumeralUtil.integerToNumeral(enchantLevel)));
+                    enchantLore.add(TranslateColour("&aApplicable to: &e" + enchant.getItemTarget().name()));
+                    enchantLore.add(" ");
+                    enchantLore.add(TranslateColour("&7Drag and drop this enchant"));
+                    enchantLore.add(TranslateColour("&7enchant onto an item in your"));
+                    enchantLore.add(TranslateColour("&7inventory to apply."));
+
+                    enchantMeta.addEnchant(enchant, enchantLevel, false);
+                    enchantBook.setItemMeta(enchantMeta);
+
+                    target.getInventory().addItem(enchantBook);
+                    target.sendMessage(TranslateColour("&8[&d&lUHC&8] &8[&eEnchants&8] &8>> &aYou've been given " + enchantName + " at level " + enchantLevel + "!"));
+
 
                 }
             }
