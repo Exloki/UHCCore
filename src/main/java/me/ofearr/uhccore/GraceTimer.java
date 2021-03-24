@@ -19,6 +19,7 @@ public class GraceTimer{
 
 
 
+    @SuppressWarnings("deprecation")
     public static void graceRunnable(){
 
         new BukkitRunnable(){

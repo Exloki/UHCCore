@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -98,6 +100,32 @@ public class UHCEventHandler implements Listener {
             if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(TranslateColour("&cTeleport Compass"))){
                 player.openInventory(TeleportGUI.GUI());
             }
+        }
+    }
+
+    @EventHandler
+    public void compassGUIHandler(InventoryClickEvent e){
+        Player player = (Player) e.getWhoClicked();
+        ItemStack item = e.getCurrentItem();
+        //NPE Handling
+        if(item == null) return;
+        if(e.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
+        if(item.getType() != Material.SKULL_ITEM){
+            e.setCancelled(true);
+            return;
+        }
+        if(!item.hasItemMeta()){
+            e.setCancelled(true);
+            return;
+        }
+
+        //If its the teleport menu then get the player which the skull belongs to and teleport the player who clicked to the skull owner
+        if(e.getView().getTitle().equalsIgnoreCase(TranslateColour("&cTeleport Menu"))){
+            String skullDisplay = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+            Player target = Bukkit.getPlayer(skullDisplay);
+
+            player.teleport(target);
+            player.sendMessage(TranslateColour("&8[&d&lUHC&8] >> &aYou've been teleported to " + target.getName() + "!"));
         }
     }
 
