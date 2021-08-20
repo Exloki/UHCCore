@@ -1,7 +1,8 @@
-package me.ofearr.uhccore;
+package me.ofearr.uhccore.GUI;
 
+import me.ofearr.uhccore.UHCCore;
+import me.ofearr.uhccore.Utils.StringUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -13,18 +14,15 @@ import java.util.ArrayList;
 
 public class TeleportGUI {
 
-    static String TranslateColour(String text){
+    private static UHCCore plugin;
 
-        String converted = ChatColor.translateAlternateColorCodes('&', text);
-
-        return converted;
+    public TeleportGUI(UHCCore uhcCore){
+        this.plugin = uhcCore;
     }
 
-    static Main plugin = Main.plugin;
+    public Inventory GUI(){
 
-    public static Inventory GUI(){
-
-        Inventory teleportInventory = Bukkit.createInventory(null, 36, TranslateColour("&cTeleport Menu"));
+        Inventory teleportInventory = Bukkit.createInventory(null, 36, StringUtil.TranslateColour("&cTeleport Menu"));
 
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, (byte) 3);
         ItemStack filler = new ItemStack(Material.STAINED_GLASS_PANE, (byte) 15);
@@ -44,10 +42,10 @@ public class TeleportGUI {
             ArrayList<String> skullLore = new ArrayList<>();
 
             skullMeta.setOwner(player.getName());
-            skullMeta.setDisplayName(TranslateColour("&a" + player.getName()));
+            skullMeta.setDisplayName(StringUtil.TranslateColour("&a" + player.getName()));
 
             skullLore.add(" ");
-            skullLore.add(TranslateColour("&cClick to teleport to " + player.getName() + "."));
+            skullLore.add(StringUtil.TranslateColour("&cClick to teleport to " + player.getName() + "."));
 
             skullMeta.setLore(skullLore);
             skull.setItemMeta(skullMeta);

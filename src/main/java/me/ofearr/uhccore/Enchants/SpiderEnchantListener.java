@@ -1,6 +1,6 @@
 package me.ofearr.uhccore.Enchants;
 
-import me.ofearr.uhccore.Main;
+import me.ofearr.uhccore.UHCCore;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +17,11 @@ public class SpiderEnchantListener implements Listener {
 
     HashMap<UUID, Float> spiderHashmap = new HashMap<>();
 
-    static Main plugin = Main.plugin;
+    private static UHCCore plugin;
+
+    public SpiderEnchantListener(UHCCore uhcCore){
+        this.plugin = uhcCore;
+    }
 
 
     @EventHandler

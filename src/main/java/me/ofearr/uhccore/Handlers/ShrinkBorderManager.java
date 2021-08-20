@@ -1,22 +1,20 @@
-package me.ofearr.uhccore;
+package me.ofearr.uhccore.Handlers;
 
+import me.ofearr.uhccore.UHCCore;
+import me.ofearr.uhccore.Utils.StringUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class ShrinkBorder {
+public class ShrinkBorderManager {
 
-    static Main plugin = Main.plugin;
+    private static UHCCore plugin;
 
-    public static String TranslateColour(String text){
-
-        String converted = ChatColor.translateAlternateColorCodes('&', text);
-
-        return converted;
+    public ShrinkBorderManager(UHCCore uhcCore){
+        this.plugin = uhcCore;
     }
 
-    public static void shrinkBorderRunnable(){
+    public void shrinkBorderRunnable(){
 
         Long interval = plugin.getConfig().getLong("Settings.border-shrink-interval") * 20;
 
@@ -24,8 +22,9 @@ public class ShrinkBorder {
 
             @Override
             public void run() {
-                if(DeathMatchManager.deathMatchActive == true){
+                if(DeathMatchManager.deathMatchActive == true || plugin.gameActive == false){
                     this.cancel();
+                    return;
                 }
                 Double currentSize = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getSize();
                 Double shrinkSize = plugin.getConfig().getDouble("Settings.border-shrink-amount");
@@ -38,10 +37,10 @@ public class ShrinkBorder {
                 Double Z = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getZ();
 
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_border").setPrefix(TranslateColour("&c&lBorder Center&f: "));
-                    p.getScoreboard().getTeam("current_border").setSuffix(TranslateColour("&c" + X + "x &e" + Z + "z"));
+                    p.getScoreboard().getTeam("current_border").setPrefix(StringUtil.TranslateColour("&c&lBorder Center&f: "));
+                    p.getScoreboard().getTeam("current_border").setSuffix(StringUtil.TranslateColour("&c" + X + "x &e" + Z + "z"));
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, interval);
+        }.runTaskTimer(plugin, 0L, interval);
     }
 }

@@ -1,5 +1,7 @@
-package me.ofearr.uhccore;
+package me.ofearr.uhccore.Handlers;
 
+import me.ofearr.uhccore.UHCCore;
+import me.ofearr.uhccore.Utils.StringUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,21 +20,18 @@ import java.util.Random;
 
 public class DeathMatchManager implements Listener {
 
-    public static String TranslateColour(String text){
+    private static UHCCore plugin;
 
-        String converted = ChatColor.translateAlternateColorCodes('&', text);
-
-        return converted;
+    public DeathMatchManager(UHCCore uhcCore){
+        this.plugin = uhcCore;
     }
 
-    static Main plugin = Main.plugin;
-
-    static ArrayList<Location> playerPlacedBlocks = new ArrayList<>();
+    public static ArrayList<Location> playerPlacedBlocks = new ArrayList<>();
 
     public static boolean deathMatchActive = false;
     private static boolean countDown = false;
 
-    public static void startDeathMatch(){
+    public void startDeathMatch(){
         List<String> spawnPointsList = plugin.getConfig().getStringList("Settings.Deathmatch-Spawns");
 
         try{
@@ -69,55 +68,55 @@ public class DeathMatchManager implements Listener {
                 int seconds = timer % 60;
 
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_event").setPrefix(TranslateColour("&c&lDeath Match&f: "));
-                    p.getScoreboard().getTeam("current_event").setSuffix(TranslateColour(seconds + "s"));
+                    p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lDeath Match&f: "));
+                    p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour(seconds + "s"));
                 }
                 if(timer == 10){
                     countDown = true;
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 10 seconds!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 10 seconds!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 10 seconds!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 10 seconds!"));
 
                 } else if(timer == 5){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 5 seconds!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 5 seconds!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 5 seconds!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 5 seconds!"));
 
                 } else if(timer == 4){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 4 seconds!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 4 seconds!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 4 seconds!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 4 seconds!"));
 
                 } else if(timer == 3){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 3 seconds!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 3 seconds!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 3 seconds!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 3 seconds!"));
 
                 } else if(timer == 2){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 2 seconds!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 2 seconds!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 2 seconds!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 2 seconds!"));
 
                 } else if(timer == 1){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match will begin in 1 second!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match will begin in 1 second!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 1 second!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &c&lThe death match will begin in 1 second!"));
 
                 } else if(timer <= 0){
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.sendTitle(TranslateColour("&a&lDeath Match!"), TranslateColour("&c&lThe death match has started!"));
+                        p.sendTitle(StringUtil.TranslateColour("&a&lDeath Match!"), StringUtil.TranslateColour("&c&lThe death match has started!"));
                     }
-                    Bukkit.broadcastMessage(TranslateColour("&8[&d&lUHC&8] >> &aThe death match has started!"));
+                    Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &aThe death match has started!"));
                     this.cancel();
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.getScoreboard().getTeam("current_event").setPrefix(TranslateColour("&c&lDeath Match&f: "));
-                        p.getScoreboard().getTeam("current_event").setSuffix(TranslateColour("&aNow!"));
+                        p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lDeath Match&f: "));
+                        p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour("&aNow!"));
                         p.setHealth(p.getMaxHealth());
                         countDown = false;
                     }
@@ -125,7 +124,7 @@ public class DeathMatchManager implements Listener {
                 }
 
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 20L);
+        }.runTaskTimer(plugin, 0L, 20L);
 
 
     }
@@ -159,7 +158,7 @@ public class DeathMatchManager implements Listener {
     }
 
 
-    static ArrayList<String> winners = new ArrayList<>();
+    public static ArrayList<String> winners = new ArrayList<>();
 
     public static void winEvent(Player player){
         if(winners.size() < 3){
@@ -169,7 +168,7 @@ public class DeathMatchManager implements Listener {
             System.out.println("There are currently 3 winners, sending command.");
             String winString = "";
 
-            winString = TranslateColour("&a&l=========================\n" +
+            winString = StringUtil.TranslateColour("&a&l=========================\n" +
                     "        &6&lTop 3 Winners\n" +
                     " \n" +
                     "       &6&l1) " + winners.get(2) + " \n" +
@@ -178,16 +177,10 @@ public class DeathMatchManager implements Listener {
                     "&a&l=========================");
 
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendTitle(TranslateColour("&a&lGame Over!"), TranslateColour("&aThe game has been won!"));
-                p.sendMessage(TranslateColour("&8[&d&lUHC&8] >> &aThe game has been won!"));
+                p.sendTitle(StringUtil.TranslateColour("&a&lGame Over!"), StringUtil.TranslateColour("&aThe game has been won!"));
+                p.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &aThe game has been won!"));
                 p.sendMessage(winString);
             }
-
-            plugin.currentPlayers.clear();
-            plugin.deadPlayers.clear();
-            plugin.gameActive = false;
-            deathMatchActive = false;
-            winners.clear();
 
             //Reset the deathmatch arena to its previous state if modified
             if(playerPlacedBlocks.size() >= 1){

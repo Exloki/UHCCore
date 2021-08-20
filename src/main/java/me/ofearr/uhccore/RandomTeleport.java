@@ -6,7 +6,11 @@ import org.bukkit.entity.Player;
 
 public class RandomTeleport {
 
-    static Main plugin = Main.plugin;
+    private static UHCCore plugin;
+
+    public RandomTeleport(UHCCore uhcCore){
+        this.plugin = uhcCore;
+    }
 
     public static void randomTeleportPlayer(Player player){
 

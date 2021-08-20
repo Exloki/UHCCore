@@ -1,13 +1,9 @@
 package me.ofearr.uhccore.Enchants;
 
-import me.ofearr.uhccore.Main;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class SpiderEnchant extends Enchantment implements Listener {
 

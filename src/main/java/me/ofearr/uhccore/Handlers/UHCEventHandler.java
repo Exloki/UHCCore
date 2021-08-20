@@ -1,5 +1,8 @@
-package me.ofearr.uhccore;
+package me.ofearr.uhccore.Handlers;
 
+import me.ofearr.uhccore.GUI.TeleportGUI;
+import me.ofearr.uhccore.UHCCore;
+import me.ofearr.uhccore.Utils.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -20,13 +23,10 @@ import java.util.ArrayList;
 
 public class UHCEventHandler implements Listener {
 
-    static Main plugin = Main.plugin;
+    private static UHCCore plugin;
 
-    String TranslateColour(String text){
-
-        String converted = ChatColor.translateAlternateColorCodes('&', text);
-
-        return converted;
+    public UHCEventHandler(UHCCore uhcCore){
+        this.plugin = uhcCore;
     }
 
     @EventHandler
@@ -38,11 +38,11 @@ public class UHCEventHandler implements Listener {
             return;
         }
 
-        if(DeathMatchManager.deathMatchActive == false && plugin.currentPlayers.size() -1 <= plugin.getConfig().getInt("Settings.Force-Death-Match")){
+        if(plugin.deathMatchManager.deathMatchActive == false && plugin.currentPlayers.size() -1 <= plugin.getConfig().getInt("Settings.Force-Death-Match")){
             int taskID = DeathMatchTimer.taskID;
             Bukkit.getScheduler().cancelTask(taskID);
 
-            DeathMatchManager.startDeathMatch();
+            plugin.deathMatchManager.startDeathMatch();
         }
 
         else if(DeathMatchManager.deathMatchActive == true){
@@ -55,8 +55,8 @@ public class UHCEventHandler implements Listener {
         plugin.deadPlayers.add(player.getUniqueId());
 
         for(Player p : Bukkit.getOnlinePlayers()){
-            p.getScoreboard().getTeam("current_players").setPrefix(TranslateColour("&a&lAlive Players: "));
-            p.getScoreboard().getTeam("current_players").setSuffix(TranslateColour("&e" + plugin.currentPlayers.size()));
+            p.getScoreboard().getTeam("current_players").setPrefix(StringUtil.TranslateColour("&a&lAlive Players: "));
+            p.getScoreboard().getTeam("current_players").setSuffix(StringUtil.TranslateColour("&e" + plugin.currentPlayers.size()));
         }
 
         player.setGameMode(GameMode.SURVIVAL);
@@ -72,10 +72,10 @@ public class UHCEventHandler implements Listener {
         ItemMeta compassMeta = teleportCompass.getItemMeta();
         ArrayList<String> compassLore = new ArrayList<>();
 
-        compassMeta.setDisplayName(TranslateColour("&cTeleport Compass"));
+        compassMeta.setDisplayName(StringUtil.TranslateColour("&cTeleport Compass"));
         compassLore.add(" ");
-        compassLore.add(TranslateColour("&6Item Ability: Teleport &e(RIGHT-CLICK)"));
-        compassLore.add(TranslateColour("&7Teleport to active players during the game."));
+        compassLore.add(StringUtil.TranslateColour("&6Item Ability: Teleport &e(RIGHT-CLICK)"));
+        compassLore.add(StringUtil.TranslateColour("&7Teleport to active players during the game."));
 
         compassMeta.setLore(compassLore);
         teleportCompass.setItemMeta(compassMeta);
@@ -97,8 +97,8 @@ public class UHCEventHandler implements Listener {
                 return;
             }
 
-            if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(TranslateColour("&cTeleport Compass"))){
-                player.openInventory(TeleportGUI.GUI());
+            if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(StringUtil.TranslateColour("&cTeleport Compass"))){
+                player.openInventory(new TeleportGUI(plugin).GUI());
             }
         }
     }
@@ -120,12 +120,12 @@ public class UHCEventHandler implements Listener {
         }
 
         //If its the teleport menu then get the player which the skull belongs to and teleport the player who clicked to the skull owner
-        if(e.getView().getTitle().equalsIgnoreCase(TranslateColour("&cTeleport Menu"))){
+        if(e.getView().getTitle().equalsIgnoreCase(StringUtil.TranslateColour("&cTeleport Menu"))){
             String skullDisplay = ChatColor.stripColor(item.getItemMeta().getDisplayName());
             Player target = Bukkit.getPlayer(skullDisplay);
 
             player.teleport(target);
-            player.sendMessage(TranslateColour("&8[&d&lUHC&8] >> &aYou've been teleported to " + target.getName() + "!"));
+            player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &aYou've been teleported to " + target.getName() + "!"));
         }
     }
 

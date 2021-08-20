@@ -1,6 +1,6 @@
 package me.ofearr.uhccore.Enchants;
 
-import me.ofearr.uhccore.Main;
+import me.ofearr.uhccore.UHCCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -88,10 +88,10 @@ public class CustomEnchantmentHandler implements Listener {
         if(book.getEnchantments().containsKey(enchant)){
             if(!itemStack.getEnchantments().containsKey(enchant)){
 
-                for(int i = 0; i < Main.registeredEnchants.get(i).length; i++){
-                    if(itemStack.getType().toString().toLowerCase().contains(Main.registeredEnchants.get(i)[i])){
+                for(int i = 0; i < UHCCore.registeredEnchants.get(i).length; i++){
+                    if(itemStack.getType().toString().toLowerCase().contains(UHCCore.registeredEnchants.get(i)[i])){
                         break;
-                    } else if(i == Main.registeredEnchants.get(i).length && !(itemStack.getType().toString().toLowerCase().contains(Main.registeredEnchants.get(i)[i]))){
+                    } else if(i == UHCCore.registeredEnchants.get(i).length && !(itemStack.getType().toString().toLowerCase().contains(UHCCore.registeredEnchants.get(i)[i]))){
                         return null;
                     }
                 }

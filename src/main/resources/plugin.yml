@@ -4,3 +4,17 @@ main: me.ofearr.uhccore.Main
 commands:
   start-uhc:
     description: Starts a game of UHC.
+    aliases:
+      - uhc-start
+      - startuhc
+      - uhcstart
+  end-uhc:
+    description: Starts a game of UHC.
+    aliases:
+      - uhc-end
+      - enduhc
+      - uhcend
+  giveenchant:
+    description: Gives the specified player the specified enchant.
+    aliases:
+      - givecustomenchant
