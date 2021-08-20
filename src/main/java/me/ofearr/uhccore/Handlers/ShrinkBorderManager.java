@@ -22,7 +22,7 @@ public class ShrinkBorderManager {
 
             @Override
             public void run() {
-                if(DeathMatchManager.deathMatchActive == true || plugin.gameActive == false){
+                if(DeathMatchManager.deathMatchActive || !plugin.gameActive){
                     this.cancel();
                     return;
                 }
@@ -33,8 +33,8 @@ public class ShrinkBorderManager {
                 Bukkit.getWorld(plugin.getConfig().getString("Settings.nether-world-name")).getWorldBorder().setSize(currentSize - shrinkSize);
                 Bukkit.getWorld(plugin.getConfig().getString("Settings.end-world-name")).getWorldBorder().setSize(currentSize - shrinkSize);
 
-                Double X = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getX();
-                Double Z = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getZ();
+                double X = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getX();
+                double Z = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getZ();
 
                 for(Player p : Bukkit.getOnlinePlayers()){
                     p.getScoreboard().getTeam("current_border").setPrefix(StringUtil.TranslateColour("&c&lBorder Center&f: "));

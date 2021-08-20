@@ -133,6 +133,7 @@ public final class UHCCore extends JavaPlugin {
         deathMatchManager.deathMatchActive = false;
         deathMatchManager.winners.clear();
         deathMatchManager.playerPlacedBlocks.clear();
+        UHCEventHandler.playerKillCount.clear();
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cThe game has been ended!"));

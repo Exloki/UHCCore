@@ -29,7 +29,7 @@ public class UHCEventHandler implements Listener {
         this.plugin = uhcCore;
     }
 
-    private HashMap<UUID, Integer> playerKillCount = new HashMap<>();
+    public static HashMap<UUID, Integer> playerKillCount = new HashMap<>();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
@@ -65,18 +65,18 @@ public class UHCEventHandler implements Listener {
 
         }
 
-        if(plugin.gameActive == false){
+        if(!plugin.gameActive){
             return;
         }
 
-        if(plugin.deathMatchManager.deathMatchActive == false && plugin.currentPlayers.size() -1 <= plugin.getConfig().getInt("Settings.Force-Death-Match")){
+        if(!plugin.deathMatchManager.deathMatchActive && plugin.currentPlayers.size() -1 <= plugin.getConfig().getInt("Settings.Force-Death-Match")){
             int taskID = DeathMatchTimer.taskID;
             Bukkit.getScheduler().cancelTask(taskID);
 
             plugin.deathMatchManager.startDeathMatch();
         }
 
-        else if(DeathMatchManager.deathMatchActive == true){
+        else if(plugin.deathMatchManager.deathMatchActive){
             if(plugin.currentPlayers.size() <= 3){
                 DeathMatchManager.winEvent(player);
             }
@@ -164,7 +164,7 @@ public class UHCEventHandler implements Listener {
     public void damageEvent(EntityDamageEvent e){
         if(!(e.getEntity() instanceof Player)) return;
 
-        if(plugin.gameActive == false) return;
+        if(!plugin.gameActive) return;
 
         Player player = (Player) e.getEntity();
 

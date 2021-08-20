@@ -43,9 +43,9 @@ public class DeathMatchManager implements Listener {
 
                     ArrayList<String> splitCoords = new ArrayList<>(Arrays.asList(selectedCoords.split(", ")));
 
-                    int X = Integer.valueOf(splitCoords.get(0));
-                    int Y = Integer.valueOf(splitCoords.get(1));
-                    int Z = Integer.valueOf(splitCoords.get(2));
+                    int X = Integer.parseInt(splitCoords.get(0));
+                    int Y = Integer.parseInt(splitCoords.get(1));
+                    int Z = Integer.parseInt(splitCoords.get(2));
 
                     Location spawnLoc = Bukkit.getWorld(plugin.getConfig().getString("Settings.deathmatch-world-name")).getBlockAt(X,Y,Z).getLocation();
 
@@ -131,7 +131,7 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void blockBreakDuringDeathmatch(BlockBreakEvent e){
-        if (deathMatchActive == true && countDown == false && playerPlacedBlocks.contains(e.getBlock().getLocation())){
+        if (deathMatchActive && !countDown && playerPlacedBlocks.contains(e.getBlock().getLocation())){
             playerPlacedBlocks.remove(e.getBlock().getLocation());
         } else{
             e.setCancelled(true);
@@ -140,9 +140,9 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void blockPlaceDuringDeathmatch(BlockPlaceEvent e){
-        if(countDown == true){
+        if(countDown){
             e.setCancelled(true);
-        } else if (deathMatchActive == true && countDown == false){
+        } else if (deathMatchActive && !countDown){
             playerPlacedBlocks.add(e.getBlock().getLocation());
         }
     }
@@ -152,7 +152,7 @@ public class DeathMatchManager implements Listener {
         Entity entity = e.getEntity();
         if(!(entity instanceof Player)) return;
 
-        if(countDown == true){
+        if(countDown){
             e.setCancelled(true);
         }
     }
@@ -185,8 +185,8 @@ public class DeathMatchManager implements Listener {
             if(playerPlacedBlocks.size() >= 1){
                 World world = Bukkit.getWorld(plugin.getConfig().getString("Settings.deathmatch-world-name"));
 
-                for(int i = 0; i < playerPlacedBlocks.size(); i++){
-                    world.getBlockAt(playerPlacedBlocks.get(i)).setType(Material.AIR);
+                for (Location playerPlacedBlock : playerPlacedBlocks) {
+                    world.getBlockAt(playerPlacedBlock).setType(Material.AIR);
                 }
             }
 
@@ -197,7 +197,7 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void disableMovement(PlayerMoveEvent e){
-        if(countDown != true) return;
+        if(!countDown) return;
         Location from = e.getFrom();
         Location to = e.getTo();
 
