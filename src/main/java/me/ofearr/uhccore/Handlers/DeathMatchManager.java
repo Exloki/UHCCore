@@ -165,7 +165,6 @@ public class DeathMatchManager implements Listener {
             winners.add(player.getName());
         }
         if(winners.size() >= 3){
-            System.out.println("There are currently 3 winners, sending command.");
             String winString = "";
 
             winString = StringUtil.TranslateColour("&a&l=========================\n" +
@@ -190,6 +189,9 @@ public class DeathMatchManager implements Listener {
                     world.getBlockAt(playerPlacedBlocks.get(i)).setType(Material.AIR);
                 }
             }
+
+            plugin.endGame();
+
         }
     }
 

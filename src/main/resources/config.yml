@@ -19,3 +19,8 @@ Settings:
   score-board-display-name: "&8&lUHC &8| &b&lStaff Event"
   Deathmatch-Spawns:
     - 0,0,0
+
+  #Kill messages are randomly selected from here (<player> = player who died; <killer> = player who killed; <kill-count> = killer's kill count)
+  Player-Kill-Messages:
+    - '&c<player> has been killed by <killer> &8(&a<kill-count>&8)&c!'
+    - '&c<player> was brutally shanked by <killer> &8(&a<kill-count>&8)&c!'

@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class UHCEventHandler implements Listener {
 
@@ -29,10 +29,41 @@ public class UHCEventHandler implements Listener {
         this.plugin = uhcCore;
     }
 
+    private HashMap<UUID, Integer> playerKillCount = new HashMap<>();
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
 
         Player player = e.getEntity();
+
+        if(e.getEntity().getKiller() != null){
+            Player killer = e.getEntity().getKiller();
+            List<String> killMessages = plugin.getConfig().getStringList("Player-Kill-Messages");
+
+            Random rand = new Random();
+            String selectedKillMessage = killMessages.get(rand.nextInt(killMessages.size()));
+
+            if(!playerKillCount.containsKey(killer.getUniqueId())){
+                int killCount = 1;
+                playerKillCount.put(killer.getUniqueId(), killCount);
+
+                selectedKillMessage = selectedKillMessage.replace("<player>", player.getName())
+                        .replace("<killer>", killer.getName()).replace("<kill-count>", String.valueOf(killCount));
+
+            } else {
+                int killCount = playerKillCount.get(killer.getUniqueId()) + 1;
+                playerKillCount.put(killer.getUniqueId(), killCount);
+
+                selectedKillMessage = selectedKillMessage.replace("<player>", player.getName())
+                        .replace("<killer>", killer.getName()).replace("<kill-count>", String.valueOf(killCount));
+
+
+
+            }
+
+            e.setDeathMessage(StringUtil.TranslateColour(selectedKillMessage));
+
+        }
 
         if(plugin.gameActive == false){
             return;
