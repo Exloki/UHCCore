@@ -74,9 +74,16 @@ public class StartUHCCMD implements CommandExecutor {
                                     for(Player p : Bukkit.getOnlinePlayers()){
                                         p.sendTitle(StringUtil.TranslateColour("&a&lGame Starting!"), StringUtil.TranslateColour("&a&lThe game has started!"));
                                         plugin.currentPlayers.add(p.getUniqueId());
-                                        RandomTeleport.randomTeleportPlayer(p);
+
+                                        if(!plugin.teamManager.teamSharedSpawnsEnabled){
+                                            RandomTeleport.randomTeleportPlayer(p);
+                                        }
 
                                         plugin.uhcBoardManager.setScoreboard(p);
+                                    }
+
+                                    if(plugin.teamManager.teamSharedSpawnsEnabled){
+                                        RandomTeleport.randomTeleportPlayerTeams();
                                     }
 
                                     Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().setSize(plugin.getConfig().getDouble("Settings.default-border-size"));

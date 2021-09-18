@@ -24,6 +24,7 @@ public class TeamManager implements Listener {
     }
 
     public boolean teamsActive = instance.getConfig().getBoolean("teams-enabled");
+    public boolean teamSharedSpawnsEnabled = instance.getConfig().getBoolean("team-shared-spawns");
     private int teamSizes = instance.getConfig().getInt("team-sizes");
 
     private static ArrayList<List<UUID>> playerTeams = new ArrayList<>();
@@ -197,6 +198,10 @@ public class TeamManager implements Listener {
         return getPlayerTeamString(player);
     }
 
+    public ArrayList<List<UUID>> getPlayerTeams(){
+
+        return playerTeams;
+    }
 
 
 }
