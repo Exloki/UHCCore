@@ -45,6 +45,7 @@ public class TeleportGUI {
             skullMeta.setDisplayName(StringUtil.TranslateColour("&a" + player.getName()));
 
             skullLore.add(" ");
+            skullLore.add(StringUtil.TranslateColour("&bTeam Member(s): " + plugin.teamManager.getPlayerTeamString(player)));
             skullLore.add(StringUtil.TranslateColour("&cClick to teleport to " + player.getName() + "."));
 
             skullMeta.setLore(skullLore);

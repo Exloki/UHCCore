@@ -2,6 +2,7 @@ package me.ofearr.uhccore;
 
 import me.ofearr.uhccore.Commands.EndUHCCMD;
 import me.ofearr.uhccore.Commands.StartUHCCMD;
+import me.ofearr.uhccore.Commands.TeamChatCMD;
 import me.ofearr.uhccore.Enchants.CustomEnchantmentHandler;
 import me.ofearr.uhccore.Enchants.SpiderEnchant;
 import me.ofearr.uhccore.Handlers.*;
@@ -11,7 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public final class UHCCore extends JavaPlugin {
     public GraceTimer graceTimer = new GraceTimer(this);
     public UHCBoardManager uhcBoardManager = new UHCBoardManager(this);
     public ShrinkBorderManager shrinkBorderManager = new ShrinkBorderManager(this);
+    public TeamManager teamManager;
 
     public boolean gameActive = false;
     public boolean graceActive = false;
@@ -86,6 +87,7 @@ public final class UHCCore extends JavaPlugin {
         loadConfig();
         gameActive = false;
 
+        teamManager = new TeamManager(this);
         setRegisteredCommands();
         //setRegisteredEnchants();
         passPluginInstance();
@@ -96,6 +98,7 @@ public final class UHCCore extends JavaPlugin {
     private void setRegisteredCommands(){
         getCommand("start-uhc").setExecutor(new StartUHCCMD(this));
         getCommand("end-uhc").setExecutor(new EndUHCCMD(this));
+        getCommand("teamchat").setExecutor(new TeamChatCMD(this));
         //getCommand("giveenchant").setExecutor(new GiveEnchantCMD());
     }
 
@@ -107,13 +110,12 @@ public final class UHCCore extends JavaPlugin {
     private void setRegisteredEvents(){
         //Bukkit.getPluginManager().registerEvents(new SpiderEnchantListener(), this);
         Bukkit.getPluginManager().registerEvents(new UHCEventHandler(this), this);
+        Bukkit.getPluginManager().registerEvents(new TeamManager(this), this);
     }
 
     private void passPluginInstance(){
         new RandomTeleport(this);
     }
-
-
 
     @Override
     public void onDisable() {
@@ -134,6 +136,7 @@ public final class UHCCore extends JavaPlugin {
         deathMatchManager.winners.clear();
         deathMatchManager.playerPlacedBlocks.clear();
         UHCEventHandler.playerKillCount.clear();
+        teamManager.resetPlayerTeams();
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cThe game has been ended!"));

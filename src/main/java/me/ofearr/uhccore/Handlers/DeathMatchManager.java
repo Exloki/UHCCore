@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -13,10 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DeathMatchManager implements Listener {
 
@@ -158,21 +156,21 @@ public class DeathMatchManager implements Listener {
     }
 
 
-    public static ArrayList<String> winners = new ArrayList<>();
+    public static ArrayList<UUID> winners = new ArrayList<>();
 
     public static void winEvent(Player player){
         if(winners.size() < 3){
-            winners.add(player.getName());
+            winners.add(player.getUniqueId());
         }
         if(winners.size() >= 3){
-            String winString = "";
+            String winString;
 
             winString = StringUtil.TranslateColour("&a&l=========================\n" +
-                    "        &6&lTop 3 Winners\n" +
+                    "        &6&lTop 3 Teams\n" +
                     " \n" +
-                    "       &6&l1) " + winners.get(2) + " \n" +
-                    "       &e&l2) " + winners.get(1)  + " \n" +
-                    "       &c&l3) " + winners.get(0)  + "\n" +
+                    "       &6&l1) " + plugin.teamManager.getPlayerTeamString(winners.get(2)) + " \n" +
+                    "       &e&l2) " + plugin.teamManager.getPlayerTeamString(winners.get(1))  + " \n" +
+                    "       &c&l3) " + plugin.teamManager.getPlayerTeamString(winners.get(0))  + "\n" +
                     "&a&l=========================");
 
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -195,7 +193,7 @@ public class DeathMatchManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void disableMovement(PlayerMoveEvent e){
         if(!countDown) return;
         Location from = e.getFrom();

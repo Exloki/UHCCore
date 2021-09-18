@@ -9,6 +9,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,7 +32,7 @@ public class UHCEventHandler implements Listener {
 
     public static HashMap<UUID, Integer> playerKillCount = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent e){
 
         Player player = e.getEntity();
@@ -114,7 +115,7 @@ public class UHCEventHandler implements Listener {
 
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void useCompass(PlayerInteractEvent e){
 
         Player player = e.getPlayer();
@@ -134,7 +135,7 @@ public class UHCEventHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void compassGUIHandler(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
         ItemStack item = e.getCurrentItem();
@@ -160,7 +161,7 @@ public class UHCEventHandler implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void damageEvent(EntityDamageEvent e){
         if(!(e.getEntity() instanceof Player)) return;
 

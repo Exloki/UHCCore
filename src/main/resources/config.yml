@@ -1,4 +1,8 @@
 Settings:
+  #Determines whether teams are enabled
+  teams-enabled: true
+  #Determines the team sizes
+  team-sizes: 2
   #Time in seconds
   Grace-Period: 600
   #Time in seconds (time until death match after game starts - needs changed due to unrealistic value)

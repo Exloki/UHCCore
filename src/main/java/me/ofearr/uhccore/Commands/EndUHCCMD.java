@@ -17,15 +17,18 @@ public class EndUHCCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
-        Player player = (Player) sender;
-        if(command.getName().equalsIgnoreCase("end-uhc")){
-            if(!player.hasPermission("uhc.end")){
-                player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cInsufficient Permissions!"));
-            } else{
-                if(plugin.gameActive == false){
-                    player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cThere is no game currently active! Start one via '/startuhc'."));
+
+        if(sender instanceof Player){
+            Player player = (Player) sender;
+            if(command.getName().equalsIgnoreCase("end-uhc")){
+                if(!player.hasPermission("uhc.end")){
+                    player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cInsufficient Permissions!"));
                 } else{
-                    plugin.endGame();
+                    if(plugin.gameActive == false){
+                        player.sendMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &cThere is no game currently active! Start one via '/startuhc'."));
+                    } else{
+                        plugin.endGame();
+                    }
                 }
             }
         }
