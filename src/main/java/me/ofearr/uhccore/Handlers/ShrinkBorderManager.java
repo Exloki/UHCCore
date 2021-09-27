@@ -36,9 +36,11 @@ public class ShrinkBorderManager {
                 double X = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getX();
                 double Z = Bukkit.getWorld(plugin.getConfig().getString("Settings.over-world-name")).getWorldBorder().getCenter().getZ();
 
+                String borderLocString = "&c" + X + "x &e" + Z + "z";
+
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_border").setPrefix(StringUtil.TranslateColour("&c&lBorder Center&f: "));
-                    p.getScoreboard().getTeam("current_border").setSuffix(StringUtil.TranslateColour("&c" + X + "x &e" + Z + "z"));
+
+                    plugin.uhcBoardManager.updateScoreboardValue(p, "current_border", borderLocString);
                 }
             }
         }.runTaskTimer(plugin, 0L, interval);

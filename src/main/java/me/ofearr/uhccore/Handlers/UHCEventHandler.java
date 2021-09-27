@@ -89,8 +89,8 @@ public class UHCEventHandler implements Listener {
         plugin.deadPlayers.add(player.getUniqueId());
 
         for(Player p : Bukkit.getOnlinePlayers()){
-            p.getScoreboard().getTeam("current_players").setPrefix(StringUtil.TranslateColour("&a&lAlive Players: "));
-            p.getScoreboard().getTeam("current_players").setSuffix(StringUtil.TranslateColour("&e" + plugin.currentPlayers.size()));
+
+            plugin.uhcBoardManager.updateScoreboardValue(p, "current_players", plugin.currentPlayers.size());
         }
 
         player.setGameMode(GameMode.SURVIVAL);
