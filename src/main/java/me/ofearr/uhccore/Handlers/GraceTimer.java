@@ -36,9 +36,11 @@ public class GraceTimer{
                 }
 
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lGrace Period&f: "));
-                    p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour("&a" + hours + "h " + minutes + "m " + seconds + "s"));
+
+                    String graceTime = "&a" + hours + "h " + minutes + "m " + seconds + "s";
+                    plugin.uhcBoardManager.setScoreboardCurrentEvent(p, "Grace Period", graceTime);
                 }
+
                 if(timer == 600){
                     for(Player p : Bukkit.getOnlinePlayers()){
                         p.sendTitle(StringUtil.TranslateColour("&a&lGrace Period!"), StringUtil.TranslateColour("&c&lThe grace period will end in 10 minutes!"));
@@ -112,6 +114,11 @@ public class GraceTimer{
                     Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &aThe grace period has ended! PVP is now enabled and the border will now start shrinking!"));
                     plugin.graceActive = false;
                     plugin.shrinkBorderManager.shrinkBorderRunnable();
+
+                    for(Player p : Bukkit.getOnlinePlayers()){
+                        plugin.uhcBoardManager.setScoreboardCurrentEvent(p, "NONE", "NONE");
+                    }
+
                     new DeathMatchTimer(plugin).deathMatchRunnable();
                     this.cancel();
                 }

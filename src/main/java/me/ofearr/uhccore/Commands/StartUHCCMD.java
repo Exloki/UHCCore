@@ -79,7 +79,7 @@ public class StartUHCCMD implements CommandExecutor {
                                             RandomTeleport.randomTeleportPlayer(p);
                                         }
 
-                                        plugin.uhcBoardManager.setScoreboard(p);
+                                        plugin.uhcBoardManager.setDefaultScoreboard(p);
                                     }
 
                                     if(plugin.teamManager.teamSharedSpawnsEnabled){

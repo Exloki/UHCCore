@@ -18,35 +18,86 @@ public class UHCBoardManager {
         this.plugin = uhcCore;
     }
 
-    public void setScoreboard(Player player){
+    public void setDefaultScoreboard(Player player){
 
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        Scoreboard playerScoreboard = player.getScoreboard();
+        boolean updatedVals = false;
 
-        Objective objective = board.registerNewObjective("UHCBoard" , "UHCBoard");
+        if(playerScoreboard.getTeam("current_players") != null){
+            Team currentPlayers = playerScoreboard.getTeam("current_players");
+            currentPlayers.setPrefix(StringUtil.TranslateColour("&a&lAlive Players: "));
+            currentPlayers.setSuffix(StringUtil.TranslateColour("&e" + plugin.currentPlayers.size()));
 
-        objective.setDisplayName(StringUtil.TranslateColour(plugin.getConfig().getString("Settings.score-board-display-name")));
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            updatedVals = true;
+        }
 
-        Team currentPlayers = board.registerNewTeam("current_players");
-        currentPlayers.addEntry(ChatColor.GOLD.toString());
-        currentPlayers.setPrefix(StringUtil.TranslateColour("&a&lAlive Players: "));
-        currentPlayers.setSuffix(StringUtil.TranslateColour("&e" + plugin.currentPlayers.size()));
-        objective.getScore(ChatColor.GOLD.toString()).setScore(7);
 
-        Team currentBorder = board.registerNewTeam("current_border");
-        currentBorder.addEntry(ChatColor.BLUE.toString());
-        currentBorder.setPrefix(StringUtil.TranslateColour("&a&lCurrent Border: &f" + plugin.currentPlayers.size()));
-        currentBorder.setSuffix(" ");
-        objective.getScore(ChatColor.BLUE.toString()).setScore(5);
+        if(playerScoreboard.getTeam("current_border") != null){
+            Team currentBorder = playerScoreboard.getTeam("current_border");
+            currentBorder.setPrefix(StringUtil.TranslateColour("&a&lCurrent Border: &f"));
+            currentBorder.setSuffix(StringUtil.TranslateColour("&fNONE"));
 
-        Team currentEvent = board.registerNewTeam("current_event");
-        currentEvent.addEntry(ChatColor.RED.toString());
-        currentEvent.setPrefix(StringUtil.TranslateColour("&c&lGrace Period&f: "));
-        currentEvent.setSuffix(StringUtil.TranslateColour("&a300s"));
-        objective.getScore(ChatColor.RED.toString()).setScore(3);
+            updatedVals = true;
+        }
 
-        player.setScoreboard(board);
+        if(playerScoreboard.getTeam("current_event") != null){
+            Team currentBorder = playerScoreboard.getTeam("current_event");
+            currentBorder.setPrefix(StringUtil.TranslateColour("&c&lGrace Period&f: "));
+            currentBorder.setSuffix(StringUtil.TranslateColour("&a300s"));
 
+            updatedVals = true;
+        }
+
+
+        if(updatedVals){
+            player.setScoreboard(playerScoreboard);
+        }
 
     }
+
+    public void updateScoreboardValue(Player player, String team, Object value){
+
+        Scoreboard playerScoreboard = player.getScoreboard();
+        boolean updatedVals = false;
+
+        if((playerScoreboard.getTeam("current_players") != null) && team.equalsIgnoreCase("current_players")){
+            Team currentPlayers = playerScoreboard.getTeam("current_players");
+            currentPlayers.setSuffix(StringUtil.TranslateColour("&e" + value.toString()));
+
+            updatedVals = true;
+        }
+
+        if((playerScoreboard.getTeam("current_border") != null) && team.equalsIgnoreCase("current_border")){
+            Team currentBorder = playerScoreboard.getTeam("current_border");
+            currentBorder.setSuffix(StringUtil.TranslateColour("&f" + value.toString()));
+
+            updatedVals = true;
+        }
+
+        if(updatedVals){
+            player.setScoreboard(playerScoreboard);
+        }
+
+    }
+
+    public void setScoreboardCurrentEvent(Player player, String eventName, Object value){
+
+        Scoreboard playerScoreboard = player.getScoreboard();
+        boolean updatedVals = false;
+
+        if(playerScoreboard.getTeam("current_event") != null){
+            Team currentEvent = playerScoreboard.getTeam("current_event");
+            currentEvent.setPrefix(StringUtil.TranslateColour("&c&l" + eventName + "&f: "));
+            currentEvent.setSuffix(StringUtil.TranslateColour("&f" + value.toString()));
+
+            updatedVals = true;
+        }
+
+        if(updatedVals){
+            player.setScoreboard(playerScoreboard);
+        }
+
+    }
+
+
 }

@@ -40,15 +40,6 @@ public class SpiderEnchant extends Enchantment implements Listener {
         return EnchantmentTarget.ARMOR_FEET;
     }
 
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
 
     @Override
     public boolean conflictsWith(Enchantment other) {

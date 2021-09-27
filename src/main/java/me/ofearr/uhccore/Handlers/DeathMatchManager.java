@@ -55,8 +55,6 @@ public class DeathMatchManager implements Listener {
             System.out.println("Caught Exception: You don't have enough spawn points set for the current amount of players!");
         }
 
-
-
         deathMatchActive = true;
 
         new BukkitRunnable() {
@@ -65,10 +63,14 @@ public class DeathMatchManager implements Listener {
             public void run() {
                 int seconds = timer % 60;
 
+                String secondsString = seconds + "s";
+
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lDeath Match&f: "));
-                    p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour(seconds + "s"));
+
+                    plugin.uhcBoardManager.setScoreboardCurrentEvent(p, "Death Match", secondsString);
+                    p.setHealth(p.getMaxHealth());
                 }
+
                 if(timer == 10){
                     countDown = true;
                     for(Player p : Bukkit.getOnlinePlayers()){
@@ -112,12 +114,14 @@ public class DeathMatchManager implements Listener {
                     }
                     Bukkit.broadcastMessage(StringUtil.TranslateColour("&8[&d&lUHC&8] >> &aThe death match has started!"));
                     this.cancel();
+
                     for(Player p : Bukkit.getOnlinePlayers()){
-                        p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lDeath Match&f: "));
-                        p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour("&aNow!"));
+
+                        plugin.uhcBoardManager.setScoreboardCurrentEvent(p, "Death Match", "&aNow!");
                         p.setHealth(p.getMaxHealth());
-                        countDown = false;
                     }
+
+                    countDown = false;
 
                 }
 
@@ -129,6 +133,9 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void blockBreakDuringDeathmatch(BlockBreakEvent e){
+
+        if(!plugin.gameActive) return;
+
         if (deathMatchActive && !countDown && playerPlacedBlocks.contains(e.getBlock().getLocation())){
             playerPlacedBlocks.remove(e.getBlock().getLocation());
         } else{
@@ -138,6 +145,8 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void blockPlaceDuringDeathmatch(BlockPlaceEvent e){
+        if(!plugin.gameActive) return;
+
         if(countDown){
             e.setCancelled(true);
         } else if (deathMatchActive && !countDown){
@@ -147,6 +156,9 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler
     public static void playerDamageEvent(EntityDamageEvent e){
+
+        if(!plugin.gameActive) return;
+
         Entity entity = e.getEntity();
         if(!(entity instanceof Player)) return;
 
@@ -195,6 +207,9 @@ public class DeathMatchManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public static void disableMovement(PlayerMoveEvent e){
+
+        if(!plugin.gameActive) return;
+
         if(!countDown) return;
         Location from = e.getFrom();
         Location to = e.getTo();

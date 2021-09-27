@@ -32,6 +32,7 @@ public class TeamManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamageTeamMember(EntityDamageByEntityEvent e){
 
+        if(!instance.gameActive) return;
         if(!teamsActive) return;
 
         if(e.getDamager() instanceof Player && e.getEntity() instanceof Player){

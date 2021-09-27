@@ -27,6 +27,10 @@ public class DeathMatchTimer {
             @Override
             public void run() {
 
+                if(!plugin.gameActive){
+                    this.cancel();
+                    return;
+                }
 
                 int seconds = timer % 60;
                 int hours = seconds / 60;
@@ -34,9 +38,11 @@ public class DeathMatchTimer {
 
                 hours = hours / 60;
 
+                String deathMatchTimerString = "&a" + hours + "h " + minutes + "m " + seconds + "s";
+
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    p.getScoreboard().getTeam("current_event").setPrefix(StringUtil.TranslateColour("&c&lDeath Match&f: "));
-                    p.getScoreboard().getTeam("current_event").setSuffix(StringUtil.TranslateColour("&a" + hours + "h " + minutes + "m " + seconds + "s"));
+
+                    plugin.uhcBoardManager.setScoreboardCurrentEvent(p, "Death Match", deathMatchTimerString);
                 }
 
                 if(timer == 600){

@@ -35,6 +35,8 @@ public class UHCEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent e){
 
+        if(!plugin.gameActive) return;
+
         Player player = e.getEntity();
 
         if(e.getEntity().getKiller() != null){
@@ -118,6 +120,8 @@ public class UHCEventHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void useCompass(PlayerInteractEvent e){
 
+        if(!plugin.gameActive) return;
+
         Player player = e.getPlayer();
         Action action = e.getAction();
 
@@ -137,6 +141,9 @@ public class UHCEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void compassGUIHandler(InventoryClickEvent e){
+
+        if(!plugin.gameActive) return;
+
         Player player = (Player) e.getWhoClicked();
         ItemStack item = e.getCurrentItem();
         //NPE Handling
