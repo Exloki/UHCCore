@@ -9,7 +9,7 @@ commands:
       - startuhc
       - uhcstart
   end-uhc:
-    description: Starts a game of UHC.
+    description: Ends a game of UHC.
     aliases:
       - uhc-end
       - enduhc
